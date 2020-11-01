@@ -5,6 +5,8 @@ if(isset($_GET['action'])){
     if('add' === $_GET['action']) {
         $id = (int)$_GET['id'];
         addToCart($id);
+        header("Location: {$_SERVER['PHP_SELF']}");
+
     } 
 
     //go to cart
@@ -37,13 +39,15 @@ if(isset($_GET['action'])){
 }
 
 if(isset($_POST['submit'])){
-
+    //save changes in cart
     if('Save changes' === $_POST['submit']) {
         recalcCart($_POST['qty']);
         $cartFilled = cartIsFill($products);
         connectTmpl('cart', $cartFilled);
 
     } 
+
+    // clean cart
     if('Clean Up' === $_POST['submit']) {
         cleanCart();
         $cartFilled = cartIsFill($products);

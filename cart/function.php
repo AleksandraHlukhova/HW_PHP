@@ -50,11 +50,12 @@ function cartIsFill($products){
 //add to cart new products
 function addToCart($id, $qty = 1){
     $products = &cartProduct();
+
         if(array_key_exists($id, $products)){
             $products[$id]++;
         }else {
             $products[$id] = $qty;
-        }
+        }    
 }
 
 
