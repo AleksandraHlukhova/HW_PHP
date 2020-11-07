@@ -1,22 +1,16 @@
 <?php
 
 namespace Core\Classes;
+use Core\Classes\MainReaderClass;
 use Core\Interfaces\Readable;
 
-class CsvReaderClass implements Readable
-{
-
-    public function __construct()
-    {
-
-        echo 'class CsvReaderClass!!!!!!!!!!!';
-    }
-
+class CsvReaderClass extends MainReaderClass implements Readable
+{    
     ///file parsing
-    public function parseFile($pathName)
+    public function parseFile()
     {
         $info = array_map(
-            'str_getcsv' ,file($pathName)
+            'str_getcsv' ,file($this->pathName)
         );
 
         $csvFile = [];

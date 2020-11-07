@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <table>
+    <table class="table">
         <tr>
             <td>
                 #
@@ -17,24 +17,49 @@
                 Domains
             </td>
             <td>
+                IP-adress
+            </td>
+            <td>
                 Rang
             </td>
+            <td>
+                Status
+            </td>
+            <td>
+                Checked
+            </td>
         </tr>
-        <?php foreach($data as $el): ?>
+
+        <?php $key = 1 ;?>
+
+        <?php if(is_array($data)) :?>
+        <?php if($key <= 10) :?>
+        <?php foreach($data as $domain => $rang): ?>
         <tr>
             <td>
-                <?= $el['id'] ?>
+                <?= $key++ ?>
             </td>
             <td>
-            <?= $el['domain'] ?>
+            <?= $domain ?>
 
             </td>
             <td>
-            <?= $el['rang'] ?>
+                #
+            </td>
+            <td>
+            <?= $rang ?>
 
+            </td>
+            <td>
+                #
+            </td>
+            <td>
+                #
             </td>
         </tr>
         <?php endforeach ?>
+        <?php endif ?>
+        <?php endif ?>
 
     </table>
 </body>

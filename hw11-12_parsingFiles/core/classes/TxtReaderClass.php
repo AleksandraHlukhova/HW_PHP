@@ -1,29 +1,24 @@
 <?php
 
 namespace Core\Classes;
+use Core\Classes\MainReaderClass;
 use Core\Interfaces\Readable;
 
-class TxtReaderClass implements Readable
+class TxtReaderClass extends MainReaderClass implements Readable
 {
-
-
-    public function __construct()
-    {
-        echo 'class TxtReaderClass!!!!!!!!!!!';
-    }
-
     ///file parsing
-    public function parseFile($pathName)
+    public function parseFile()
     {
 
         $info = array_map(
-            'str_getcsv' ,file($pathName)
+            'str_getcsv' ,file($this->pathName)
         );
+
         $txtFile = [];
 
         foreach($info as $el)
         {
-            $files = explode(';', $el[0]);
+            $files = explode(';', str_replace('"', '', $el[0]));
             $txtFile[] = [
                 'id' => $files[0],
                 'domain' => $files[1],

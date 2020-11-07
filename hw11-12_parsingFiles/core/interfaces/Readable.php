@@ -5,5 +5,5 @@ namespace Core\Interfaces;
 
 interface Readable
 {
-    public function parseFile($pathName);
+    public function parseFile();
 }
