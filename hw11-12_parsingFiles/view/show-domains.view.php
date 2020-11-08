@@ -31,7 +31,6 @@
         </tr>
 
         <?php if(is_array($data)) :?>
-            <?php if($key <= 10) :?>
                 <?php foreach($data as $key => $value): ?>
 
                     <tr>
@@ -56,7 +55,6 @@
                     </tr>
 
                 <?php endforeach ?>
-            <?php endif ?>
         <?php endif ?>
 
     </table>
