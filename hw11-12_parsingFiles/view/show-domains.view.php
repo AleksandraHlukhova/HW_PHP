@@ -30,36 +30,33 @@
             </td>
         </tr>
 
-        <?php $key = 1 ;?>
-
         <?php if(is_array($data)) :?>
-        <?php if($key <= 10) :?>
+            <?php if($key <= 10) :?>
+                <?php foreach($data as $key => $value): ?>
 
-        <?php foreach($data as $key => $value): ?>
-        <tr>
-            <td>
-                <?= $key++ ?>
-            </td>
-            <td>
-            <?= $value['domain'] ?>
+                    <tr>
+                        <td>
+                            <?= ++$key ?>
+                        </td>
+                        <td>
+                            <?= $value['domain'] ?>
+                        </td>
+                        <td>
+                            <?= gethostbyname($value['domain']) ?>
+                        </td>
+                        <td>
+                            <?= $value['rang'] ?>
+                        </td>
+                        <td>
+                            <?= $value['http_code'] ?>
+                        </td>
+                        <td>
+                            <?= $value['time'] ?> sec ago...
+                        </td>
+                    </tr>
 
-            </td>
-            <td>
-                <?= gethostbyname($value['domain']) ?>
-            </td>
-            <td>
-            <?= $value['rang'] ?>
-
-            </td>
-            <td>
-            <?= $value['http_code'] ?>
-            </td>
-            <td>
-            <?= $value['time'] ?>
-            </td>
-        </tr>
-        <?php endforeach ?>
-        <?php endif ?>
+                <?php endforeach ?>
+            <?php endif ?>
         <?php endif ?>
 
     </table>
