@@ -34,27 +34,28 @@
 
         <?php if(is_array($data)) :?>
         <?php if($key <= 10) :?>
-        <?php foreach($data as $domain => $rang): ?>
+
+        <?php foreach($data as $key => $value): ?>
         <tr>
             <td>
                 <?= $key++ ?>
             </td>
             <td>
-            <?= $domain ?>
+            <?= $value['domain'] ?>
 
             </td>
             <td>
-                #
+                <?= gethostbyname($value['domain']) ?>
             </td>
             <td>
-            <?= $rang ?>
+            <?= $value['rang'] ?>
 
             </td>
             <td>
-                #
+            <?= $value['http_code'] ?>
             </td>
             <td>
-                #
+            <?= $value['time'] ?>
             </td>
         </tr>
         <?php endforeach ?>

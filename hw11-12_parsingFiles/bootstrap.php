@@ -12,14 +12,18 @@ use Core\Classes\ConnectTmpl;
 // autoload
 AutoloadClass::load();
 
-// main controller
+
 $files = new ControllerClass($pathToInputSmall);
+////parsing files, return domain and rang
 $data = $files->getData();
 
 array_unique($data);
 arsort($data);
-$data = array_slice($data, 0, 15);
+$data = array_slice($data, 0, 12);
 
-new CurlClass();
+$curl = new CurlClass($data);
+////get response status and time for answer from server, and make full array info
+$result = $curl->getStatus();
 
-ConnectTmpl::getTmpl($pathToMainView, 'show-domains', $data);
+//connect tmpl
+ConnectTmpl::getTmpl($pathToMainView, 'show-domains', $result);
