@@ -1,1 +1,1 @@
-<a href="<?php echo $_SERVER['PHP_SELF']. '?action=main/posts' ?>">HOME</a>
+<a href="<?php echo $_SERVER['PHP_SELF']. '?action=main/posts' ?>">GO TO POSTS</a>
