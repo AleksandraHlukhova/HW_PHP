@@ -1,7 +1,7 @@
 <?php
 
 $subjectMsg = [
-    '1' => 'Проблема с сайтом',
-    '2' => 'Проблема с получением писем',
-    '3' => 'Другие вопросы'
+    '1' => 'Problem with site',
+    '2' => 'Problem with letter sending',
+    '3' => 'Another questiongs'
 ];
