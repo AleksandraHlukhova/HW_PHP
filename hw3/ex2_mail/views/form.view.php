@@ -2,12 +2,14 @@
 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="POST">
     <div class="form-group">
         <label for="userName">Name</label>
-        <input type="text" name="userName" class="form-control" id="userName">
+        <input type="text" name="userName" class="form-control" id="userName"
+            value="<?= isset($data['oldInput']['userName'])? $data['oldInput']['userName'] : ''; ?>">
         <small id="emailHelp" class="form-text alert-danger"><?= isset($data['errMsg']['errName'])? $data['errMsg']['errName'] : ''; ?></small>
     </div>
     <div class="form-group">
         <label for="userEmail">Email</label>
-        <input type="text" name="userEmail" class="form-control" id="userEmail">
+        <input type="text" name="userEmail" class="form-control" id="userEmail"
+            value="<?= isset($data['oldInput']['userEmail'])? $data['oldInput']['userEmail'] : ''; ?>">
         <small id="emailHelp" class="form-text alert-danger"><?= isset($data['errMsg']['errEmail'])? $data['errMsg']['errEmail'] : ''; ?></small>
     </div>
     <div class="form-group">
@@ -19,7 +21,9 @@
         </select>
     </div>
     <div class="form-group">
-        <textarea class="form-control" name="userMsg" style="width:100%; height:100px" id="userMsg"></textarea>
+        <textarea class="form-control" name="userMsg" style="width:100%; height:100px" id="userMsg">
+            <?= isset($data['oldInput']['userMsg'])? $data['oldInput']['userMsg'] : ''; ?>
+        </textarea>
         <label class="form-check-label" for="userMsg">Write message</label>
         <small id="emailHelp" class="form-text alert-danger"><?= isset($data['errMsg']['UserMsg'])? $data['errMsg']['UserMsg'] : ''; ?></small>
     </div>
