@@ -11,7 +11,7 @@ class PostModel
     {
         if(count($params) > 0)
         {
-
+            
            if($result = $mysqli->query("SELECT * FROM post JOIN post_photos ON post_photos.id_post=post.id where post.id={$params['id']}"))
            {
 
@@ -20,13 +20,11 @@ class PostModel
            }
 
         }else{
-           // $result = $mysqli->query('SELECT * FROM post JOIN post_photos ON post_photos.id_post=post.id');
-            $result = $mysqli->query('SELECT * FROM post_photos JOIN post ON post_photos.id_post=post.id group by post.id');
+           
+            $result = $mysqli->query('SELECT * FROM post_photos JOIN post ON post_photos.id_post=post.id group by post.id DESC');
 
         }
-        // echo '<pre>';
-        // var_dump($result);
-        // exit;
+        
         if (is_a($result, 'mysqli_result')) {
             
             /* извлечение ассоциативного массива */
@@ -38,18 +36,10 @@ class PostModel
             /* очищаем результаты выборки */
             $result->free();
         }
-        echo '<pre>';
-        var_dump($data);
-        exit;
+
         $mysqli->close();
 
-
-        // echo '<pre>';
-        // var_dump($data);
-        // exit;
         return $data;
-        // echo '<pre>';
-        // var_dump($data);
-        // exit;
+
     }
 }
