@@ -22,15 +22,37 @@ class MainController
     //connect home page
     public static function index($params = [])
     {
-        
         $mysqli = new DbConnect(HOST, USER, PASS, DbName);
+
         $categories = CategoryModel::getCategories($mysqli);
+        $posts = PostModel::getPosts($mysqli);
+        
+        $tnsf = [];
+        echo "<pre>";
+        print_r($categories);
+        print_r($posts);
+        foreach ($categories as $catId => &$category) {
+            $catPosts = [];
+            foreach($posts as $key => $post) 
+            {
+                if($post->category_id === $catId)
+                {
+                    $catPosts[$catId] = $posts[$catId];
+                }
+            }
+            // var_dump($catId, intval($post->category_id));
+           
+               $category->posts = $catPosts; 
 
-        $mysqli1 = new DbConnect(HOST, USER, PASS, DbName);
-        $posts = PostModel::getPosts($mysqli1);
-
-        // $mysqli3 = new DbConnect(HOST, USER, PASS, DbName);
-        // $photos = PostPhotoModel::getPostPhotos($mysqli3);
+        }
+        
+        // print_r($catPosts);
+        exit;
+        
+        //$photos = PostPhotoModel::getPostPhotos($mysqli);
+        
+        DbConnect::closeConnection($mysqli);
+    
 
         self::load('home', $categories, $posts);
     }

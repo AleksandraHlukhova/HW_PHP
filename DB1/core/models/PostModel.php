@@ -12,7 +12,7 @@ class PostModel
         if(count($params) > 0)
         {
             
-           if($result = $mysqli->query("SELECT * FROM post JOIN post_photos ON post_photos.id_post=post.id where post.id={$params['id']}"))
+           if($result = $mysqli->query("SELECT * FROM post"))
            {
 
             // $result->bind_param("i", $params['id']);
@@ -21,7 +21,7 @@ class PostModel
 
         }else{
            
-            $result = $mysqli->query('SELECT * FROM post_photos JOIN post ON post_photos.id_post=post.id group by post.id DESC');
+            $result = $mysqli->query('SELECT * FROM post');
 
         }
         
@@ -29,7 +29,7 @@ class PostModel
             
             /* извлечение ассоциативного массива */
             while ($obj = $result->fetch_object()) {
-                $data[] = $obj;
+                $data[$obj->category_id] = $obj;
            
             }
            
@@ -37,7 +37,7 @@ class PostModel
             $result->free();
         }
 
-        $mysqli->close();
+        //$mysqli->close();
 
         return $data;
 

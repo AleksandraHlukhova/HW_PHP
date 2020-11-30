@@ -2,7 +2,8 @@
 
 namespace App\Classes;
 
-use App\Classes\MainController;
+use App\Classes;
+//use App\Classes\MainController;
 
 class Router
 {
@@ -23,6 +24,7 @@ class Router
         //[2] - params
         $routes = explode('/', $url);
 
+
         //without params connect home page
         if(empty($routes[0]) && empty($routes[1]))
         {
@@ -39,7 +41,7 @@ class Router
         //make method name
         if(!empty($routes[2]))
         {
-            $method = ucfirst($routes[2]);
+            $method = strtolower($routes[2]);
         }
 
         ///come &id=1
@@ -59,8 +61,17 @@ class Router
             $params = [];
         }
 
+        //var_dump(__NAMESPACE__ . '\\' . $controller);
         //connect controller
-        MainController::$method($params);
+
+        $className = sprintf("%s\\%s", __NAMESPACE__, $controller);
+        // var_dump($className);
+        // exit;
+
+        $className::$method($params);
+
+        //__NAMESPACE__ . '\\' . $controller::$method($params);
+        // call_user_func($controller, $method, $params);
 
     }
 }

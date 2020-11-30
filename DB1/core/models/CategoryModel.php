@@ -15,14 +15,14 @@ class CategoryModel
 
             /* извлечение ассоциативного массива */
             while ($obj = $result->fetch_object()) {
-                $data[] = $obj;
+                $data[$obj->id] = $obj;
             }
 
             /* очищаем результаты выборки */
             $result->free();
         }
         
-        $mysqli->close();
+        // $mysqli->close();
         
         return $data;
         // echo '<pre>';

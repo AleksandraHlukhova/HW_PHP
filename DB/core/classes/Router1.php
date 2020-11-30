@@ -16,7 +16,7 @@ class Router1
                 'controller' => $handlers[0],
                 'method' => $handlers[1],
             ];
-        debug(self::$routing);
+        // debug(self::$routing);
 
         
     }

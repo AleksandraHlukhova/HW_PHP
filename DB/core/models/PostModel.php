@@ -38,9 +38,9 @@ class PostModel
             /* очищаем результаты выборки */
             $result->free();
         }
-        echo '<pre>';
-        var_dump($data);
-        exit;
+        // echo '<pre>';
+        // var_dump($data);
+        // exit;
         $mysqli->close();
 
 
