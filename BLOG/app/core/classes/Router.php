@@ -22,7 +22,7 @@ class Router
      * @param $path, $callback
      * @return array
      **/
-    public function get($path, $callback) : arrray
+    public function get($path, $callback)
     {
         $this->routes['GET'][$path] = $callback;
 
@@ -33,7 +33,7 @@ class Router
      * @param 
      * @return array
      **/
-    public function post($path, $callback) : array
+    public function post($path, $callback)
     {
         $this->routes['POST'][$path] = $callback;
 
