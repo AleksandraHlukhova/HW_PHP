@@ -19,10 +19,10 @@ class Router
 
     /**
      * 
-     * @param 
-     * @return
+     * @param $path, $callback
+     * @return array
      **/
-    public function get($path, $callback)
+    public function get($path, $callback) : arrray
     {
         $this->routes['GET'][$path] = $callback;
 
@@ -31,16 +31,16 @@ class Router
     /**
      * 
      * @param 
-     * @return
+     * @return array
      **/
-    public function post($path, $callback)
+    public function post($path, $callback) : array
     {
         $this->routes['POST'][$path] = $callback;
 
     }
 
     /**
-     * add path to router
+     * connect Class and method
      * @param 
      * @return
      **/

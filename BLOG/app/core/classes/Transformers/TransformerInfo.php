@@ -12,7 +12,7 @@ class TransformerInfo
      * @param Type $var Description
      * @return type
      **/
-    public static function transformIndex($categories, $posts, $postsPhotos)
+    public function transformIndex($categories, $posts, $postsPhotos)
     {
         $data = [];
 

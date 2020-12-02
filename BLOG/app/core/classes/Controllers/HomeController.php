@@ -20,6 +20,7 @@ class HomeController extends Controller
 
     public function __construct()
     {
+        parent::__construct();
         $this->category = new Category;
         $this->posts = new Post;
         $this->postsPhoto = new PostPhoto;
@@ -31,18 +32,20 @@ class HomeController extends Controller
      * @param 
      * @return 
     **/
-    public function home()
+    public function index()
     {
 
         $categories = $this->category->getCategories();
         $posts = $this->posts->getPosts();
         $postsPhotos = $this->postsPhoto->getPostsPhotos();
 
-        $data = TransformerInfo::transformIndex($categories, $posts, $postsPhotos);
+        // $data = TransformerInfo::transformIndex($categories, $posts, $postsPhotos);
+        $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos);
+
         // echo '<pre>';
         // var_dump($data);
         // exit;
-        return $this->render('home', $data);
+        return $this->view->render('home', $data);
     }
     
     

@@ -2,10 +2,10 @@
 
     <ul class="navbar-nav mr-auto">
         <li class="navbar-item">
-            <a class="navbar-brand" href="/">Home</a>
+            <a class="navbar-brand" href="<?php echo $_SERVER['PHP_SELF']?>">Home</a>
         </li>
         <li class="navbar-item">
-            <a class="navbar-brand" href="/contact">Contact</a>
+            <a class="navbar-brand" href="<?php echo $_SERVER['PHP_SELF']. '?action=main/contact' ?>">Contact</a>
         </li>
     </ul>
 

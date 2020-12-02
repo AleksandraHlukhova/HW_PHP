@@ -3,12 +3,13 @@
 namespace App\Core\Models;
 
 use App\Core\Classes\Database\Db;
+use App\Core\Interfaces\ModelInt;
 
 
 /**
  * Model class
  */
-class Model
+class Model implements ModelInt
 {
 
     public Db $db;
@@ -45,7 +46,7 @@ class Model
      * @param 
      * @return 
      **/
-    public function insert()
+    public function insert($stmt)
     {
         # code...
     }
