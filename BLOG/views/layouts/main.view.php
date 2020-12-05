@@ -12,5 +12,9 @@
     <div class="container">
         {{content}}
     </div>
+
+    <div id="app"></div>
+    
+    <script src="<?php echo __DIR__ . '/../../dist/build.js'; ?>"></script>
 </body>
 </html>

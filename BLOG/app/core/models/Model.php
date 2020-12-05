@@ -51,5 +51,8 @@ class Model implements ModelInt
         # code...
     }
 
+    ////up()
+    ///down() for migrations
+
 
 }

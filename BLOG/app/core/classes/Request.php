@@ -30,5 +30,15 @@ class Request
     {
         return $_SERVER['REQUEST_METHOD'];
     }
+
+    // /**
+    //  * get method 
+    //  * @param 
+    //  * @return get/post
+    //  **/
+    // public function input($params)
+    // {
+    //   $params = $_GET; 
+    // }
     
 }

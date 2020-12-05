@@ -4,16 +4,16 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use App\Core\Classes\Application;
 use App\Core\Classes\Router;
+use App\Core\Classes\ConfigLoader;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-// echo '<pre>';
-// var_dump($_ENV['BASE_PATH']);
-// exit;
-$app = new Application($_ENV['BASE_URL'], __DIR__);
+$config = new ConfigLoader($_ENV);
+
+$app = Application::getInstance();
+$app1 = Application::getInstance();
 
 require_once __DIR__ . '/app/routing.php';
-// echo '<pre>';
-// var_dump($_SERVER);
+
 $app->run();
