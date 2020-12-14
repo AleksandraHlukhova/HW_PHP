@@ -4,6 +4,17 @@ namespace App\Core\Interfaces\Database;
 
 interface Connectible
 {
-    public function connect(array $params);
+    /**
+     * open connection with db
+     * @param 
+     * @return pdo obj
+     **/
+    public function connect();
+
+    /**
+     * close connection with db
+     * @param 
+     * @return null
+     **/
     public function disconnect();
 }

@@ -48,21 +48,31 @@ class Router
     {
         $path = $this->request->getPath();
         $method = $this->request->getMethod();
-        $callback = $this->routes[$method][$path];
-        
+        $params = $this->request->getParams();
+// var_dump($path);
+// exit;
+        if(!$params)
+        {
+            $callback = $this->routes[$method][$path];
+
+        }
+        else
+        {
+            $path = '/' . str_replace('/', '', $path);
+            $callback = $this->routes[$method][$path];
+        }
+
         if(is_string($callback))
         {
             return $this->view->render($callback);
         }
-        // var_dump($callback);
 
         if(is_array($callback))
         {
             $callback[0] = new $callback[0];
         }
-        // var_dump($callback, $this->request);
-        // exit;
-        return call_user_func($callback);
+        
+        return call_user_func($callback, $params);
         
     }
 

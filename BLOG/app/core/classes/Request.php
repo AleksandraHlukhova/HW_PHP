@@ -15,8 +15,18 @@ class Request
      **/
     public function getPath()
     {   
-        $base_url = Application::$BASE_URL;
-        $path = str_replace("$base_url", '', $_SERVER['REQUEST_URI']);
+
+        $path = $_GET;
+
+        if(count($path) === 0 )
+        {
+            $path = '/';
+        }
+        else
+        {
+            $path = $_GET['action'];
+
+        }
         
         return $path;
     }
@@ -31,14 +41,20 @@ class Request
         return $_SERVER['REQUEST_METHOD'];
     }
 
-    // /**
-    //  * get method 
-    //  * @param 
-    //  * @return get/post
-    //  **/
-    // public function input($params)
-    // {
-    //   $params = $_GET; 
-    // }
+    /**
+     * get method 
+     * @param 
+     * @return get/post
+     **/
+    public function getParams()
+    {
+        $params = $_GET; 
+
+        //cut first el from array
+        array_shift($params);
+        var_dump($params);
+
+        return $params;
+    }
     
 }

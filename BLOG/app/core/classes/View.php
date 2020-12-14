@@ -13,9 +13,9 @@ class View
      * @param $view
      * @return tmpl
      **/
-    public function render($view, $data = [])
+    public function render($view, $data = [], $layout = 'main')
     {
-        $layout = $this->loadLayout($data);
+        $layout = $this->loadLayout($data, $layout);
         $content = $this->loadContent($view, $data);
         $tmpl = str_replace('{{content}}', $content, $layout);
         
@@ -28,13 +28,13 @@ class View
      * @param 
      * @return main tmpl
      **/
-    public function loadLayout($data = [])
+    public function loadLayout($data = [], $layout)
     {
         ob_start();
         
         $this->extractData($data);
 
-        require_once Application::$BASE_PATH . '/views/layouts/main.view.php';
+        require_once Application::$BASE_PATH . "/views/layouts/$layout.view.php";
     
         return ob_get_clean();
     }
@@ -61,7 +61,15 @@ class View
      **/
     public function extractData($data = [])
     {
-        extract($data);
+        
+        foreach($data as $key => $value)
+        {
+        //     echo '<pre>';
+        // var_dump($key, $value);
+        // exit;
+            extract([$key => $value]);
+        }
+        // exit;
     }
 
 

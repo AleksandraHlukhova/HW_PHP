@@ -17,15 +17,5 @@ class Post extends Model
     public string $status;
     public date $date;
 
-    /**
-     * get all posts from db
-     * @param 
-     * @return 
-     **/
-    public function getPosts()
-    {
-        $result = $this->queryDb('SELECT * FROM post');
 
-        return $result;
-    }
 }

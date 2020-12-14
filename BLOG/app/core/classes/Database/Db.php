@@ -2,23 +2,26 @@
 
 namespace App\Core\Classes\Database;
 
+use App\Core\Interfaces\Database\Connectible;
+
+
 /**
  * Db class
  */
-abstract class Db implements Connectible
+abstract class DB implements Connectible
 {
     
     /**
      * open connection with db
      * @param 
-     * @return
+     * @return pdo obj
      **/
-    public abstract function connect(array $params);
+    public abstract function connect();
 
     /**
      * close connection with db
      * @param 
-     * @return
+     * @return null
      **/
     public abstract function disconnect();
     
