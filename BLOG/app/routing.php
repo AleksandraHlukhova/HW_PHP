@@ -10,8 +10,9 @@ $app::$router->get('/post', [HomeController::class, 'post']);
 $app::$router->get('auth/signup', [AuthController::class, 'index']);
 $app::$router->post('auth/signup', [AuthController::class, 'signup']);
 
-$app::$router->get('auth/profile', [AuthController::class, 'profile']);
+$app::$router->get('auth/profile', [ProfileController::class, 'profile']);
 
 $app::$router->get('auth/login', [AuthController::class, 'login']);
 $app::$router->post('auth/login', [AuthController::class, 'login']);
-$app::$router->get('/content', 'content');
+
+$app::$router->get('auth/logout', [AuthController::class, 'logout']);

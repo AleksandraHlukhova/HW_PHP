@@ -14,11 +14,11 @@ class CustomException extends \Exception
         $this->err = $err;
         $this->errorMessage($this->err);
     }
+
     public function errorMessage($err) {
         //error message
-        $errorMsg = 'Error on line '.$this->getLine().' in '.$this->getFile()
-        .': <b>'.$this->getMessage();
+        $errorMsg = 'Error on line '.$this->getLine() . $this->getMessage();
         
-        return $errorMsg;
+        echo $errorMsg;
     }
 }

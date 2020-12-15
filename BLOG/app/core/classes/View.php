@@ -61,15 +61,7 @@ class View
      **/
     public function extractData($data = [])
     {
-        
-        foreach($data as $key => $value)
-        {
-        //     echo '<pre>';
-        // var_dump($key, $value);
-        // exit;
-            extract([$key => $value]);
-        }
-        // exit;
+        extract($data);
     }
 
 

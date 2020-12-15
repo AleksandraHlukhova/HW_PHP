@@ -23,7 +23,7 @@
                         <a class="navbar-brand" style="padding-left:10px" href="#">Likes</a>
                     </div>
                     <div class="border border-light" style="width:100%">
-                        <a class="navbar-brand" style="padding-left:10px" href="#">Logout</a>
+                        <a class="navbar-brand" style="padding-left:10px" href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']). '?action=auth/logout' ?>">Logout</a>
                     </div>
 
                 </nav>

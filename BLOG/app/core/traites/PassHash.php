@@ -5,7 +5,7 @@ namespace App\Core\Traites;
 use App\Core\Classes\ConfigLoader;
 
 /**
- * undocumented class
+ * make pass hash
  */
 trait PassHash
 {

@@ -37,6 +37,7 @@ class Model implements ModelInterface
      **/
     public function select($stmt, $params = [])
     {
+
         $sth = $this->DB->prepare($stmt);
         $sth->execute($params);
         $result = $sth->fetchAll(\PDO::FETCH_OBJ);
@@ -44,36 +45,23 @@ class Model implements ModelInterface
         return $result;
     }
 
-    // /**
-    //  * add to database
-    //  * @param 
-    //  * @return 
-    //  **/
-    // public function insert($stmt, $params)
-    // {
+    /**
+     * add to database
+     * @param 
+     * @return 
+     **/
+    public function insert($stmt, $params = [])
+    {   
+        $stmt = $this->DB->prepare($stmt);        
 
-    //     // var_dump($params);
-    //     // exit;
-    //     $stmt = $this->DB->prepare($stmt);
-    //     foreach($params as $key => $param)
-    //     {
-  
-    //         $stmt->bindValue(':'. str_replace('$', '', $key), $param);
-    //     // var_dump($stmt->execute());
-
-
-    //     }
-        
-    //     var_dump($stmt->execute());
-    //     exit;
-    //     if($stmt->execute())
-    //     {
-    //         return true;
-    //     }else{
-    //         new CustomException('You were not registred!');
-    //     }
+        if($stmt->execute($params))
+        {
+            return true;
+        }else{
+            new CustomException('You were not registred!');
+        }
  
-    // }
+    }
 
     /**
      * update data in database

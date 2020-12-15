@@ -4,10 +4,10 @@ namespace App\Core\Classes\Controllers;
 
 use App\Core\Classes\Database\PdoConnection;
 use App\Core\Models\User;
-use App\Core\Traites\Validate;
+use App\Core\Classes\Helpers\Validate;
 use App\Core\Traites\PassHash;
 use App\Core\Classes\Request;
-
+use App\Core\Classes\Errors\CustomException;
 
 /**
  * AuthController class
@@ -18,7 +18,7 @@ class AuthController extends Controller
     public PdoConnection $DB;
     public Request $request;
     public Validate $validate;
-    // use Validate;
+
     use PassHash;
 
     public function __construct()
@@ -49,40 +49,47 @@ class AuthController extends Controller
      **/
     public function signup()
     {
+        //clean data
+        $data = $this->validate->clean($_POST);
 
-        // $name = $this->validate->nameValidate($_POST['user_name']);
-        // $email = $this->validate->emailValidate($_POST['user_email']);
-        // $phone = $this->validate->phoneValidate($_POST['user_phone']);
-        // $login = $this->validate->nickValidate($_POST['user_nick']);
-        // $pass = $this->validate->passValidate($_POST['user_pass']);
-        // $passHash = $this->makeHash($pass);
+        $name = $_POST['user_name'];
+        $email = $_POST['user_email'];
+        $phone = $_POST['user_phone'];
+        $login = $_POST['user_nick'];
+        $pass = $_POST['user_pass'];
+        $passRep = $_POST['user_passRep'];
 
-        // $passRep = $this->validate->passMatches($pass, $_POST['user_passRep']);
-        // $emailUnique = $this->validate->emailUnique('SELECT email FROM USER WHERE email = ?', [$email]);
+        /**
+         * validate data
+         * @return bool
+         **/
+        $result = $this->validate->validate($name, $email, $phone, $login, $pass, $passRep, $method = 'signup');
         
-        if(count($this->err) > 0)
+        if(!$result)
         {
             $data = [
-                'errors' => $this->err,
-                'oldInput' => $this->oldInput
+                'errors' => $this->validate->err,
+                'oldInput' => $this->validate->oldInput
             ];
 
             return $this->view->render('signup', $data, 'auth-main');
+
         }else{
-            $USER = new User($name, $email, $phone, $login, $passHash);
+            //generate pass hash
+            $passhash = $this->makeHash($pass);
+
+            //make model user
+            $USER = new User($name, $email, $phone, $login, $passhash);
+
+            //add to db
+            $stmt = $USER->insert("INSERT INTO user (name, email, phone, login, pass) 
+            VALUES (:name, :email, :phone, :login, :pass)", [':name' => $name, ':email' => $email, ':phone' => $phone, 
+            ':login' => $login, ':pass' => $passhash]);
             
-            $stmt = $this->DB->dbh->prepare("INSERT INTO user (name, email, phone, login, pass) 
-                        VALUES (:name, :email, :phone, :login, :pass)");
-
-            $stmt->bindValue(':name', $name);
-            $stmt->bindValue(':email', $email);
-            $stmt->bindValue(':phone', $phone);
-            $stmt->bindValue(':login', $login);
-            $stmt->bindValue(':pass', $passHash);
-
-            if($stmt->execute())
+            //if was added to db, user is auth
+            if($stmt)
             {
-                $_SESSION['auth'];
+                $_SESSION['auth'] = true;
                 return $this->view->render('profile', $data = [], 'profile-main');
 
             }else{
@@ -93,32 +100,7 @@ class AuthController extends Controller
     }
 
     /**
-     * undocumented function summary
-     * @param 
-     * @return 
-     **/
-    public static function issetAuth()
-    {
-        if(isset($_SESSION['auth']))
-        {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * undocumented function summary
-     * @param 
-     * @return 
-     **/
-    public function profile()
-    {
-        return $this->view->render('profile', $data = [], 'profile-main');
-    }
-
-
-    /**
-     * undocumented function summary
+     * login
      * @param 
      * @return 
      **/
@@ -129,8 +111,18 @@ class AuthController extends Controller
             return $this->view->render('login', $data = [], 'auth-main');
         }else if($this->request->getMethod() === 'POST')
         {
-            $email = $this->emailValidate($_POST['user_email']);
-            $pass = $this->passValidate($_POST['user_pass']);
+            //clean data
+            $data = $this->validate->clean($_POST);
+            die('Stop coding: ' . __FILE__. ' on line:' . __LINE__ . '! make signin tomorrow!');
+            $email = $_POST['user_email'];
+            $pass = $_POST['user_pass'];
+
+            /**
+             * validate data
+             * @return bool
+             **/
+            $result = $this->validate->validate($email, $pass);
+            
             
             if(count($this->err) > 0)
             {
@@ -151,6 +143,22 @@ class AuthController extends Controller
         }
     }
 
+
+    /**
+     * chack if auth
+     * @param 
+     * @return 
+     **/
+    public static function issetAuth()
+    {
+        if(isset($_SESSION['auth']))
+        {
+            return true;
+        }
+        return false;
+    }
+
+
     /**
      * undocumented function summary
      * @param 
@@ -158,6 +166,7 @@ class AuthController extends Controller
      **/
     public function logout()
     {
+        $_SESSION['auth'] = false;
         unset($_SESSION['auth']);
         return $this->view->render('login', $data = [], 'auth-main');
     }

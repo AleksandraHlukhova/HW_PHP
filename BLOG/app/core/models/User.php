@@ -11,20 +11,21 @@ class User extends Model
     public string $name;
     public string $email;
     public string $phone;
-    public string $login;
+    public string $nick;
     public string $pass;
 
 
-    public function __construct($name, $email, $phone, $login, $passHash)
+    public function __construct($name, $email, $phone, $nick, $passHash)
     {
         parent::__construct();
         $this->name = $name;
         $this->email = $email;
         $this->phone = $phone;
-        $this->login = $login;
+        $this->nick = $nick;
         $this->pass = $passHash;
 
     }
+    
     /**
      * Get the value of id
      */ 
@@ -108,9 +109,9 @@ class User extends Model
     /**
      * Get the value of login
      */ 
-    public function getLogin()
+    public function getNick()
     {
-        return $this->login;
+        return $this->nick;
     }
 
     /**
@@ -118,9 +119,9 @@ class User extends Model
      *
      * @return  self
      */ 
-    public function setLogin($login)
+    public function setNick($nick)
     {
-        $this->login = $login;
+        $this->nick = $nick;
 
         return $this;
     }
