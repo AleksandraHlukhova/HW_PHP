@@ -157,12 +157,12 @@ class Validate extends Model
         if(strlen($pass) < ConfigLoader::get('PASS_LEN'))
         {
             $this->err['user_pass'] = "Too short pass";
-            $this->oldInput['user_pass'] = $pass;
+            $this->oldInput['user_pass'] = '';
 
             return false;
         }
 
-        $this->oldInput['user_pass'] = $pass;
+        $this->oldInput['user_pass'] = '';
         return true;
     }
 
@@ -172,11 +172,11 @@ class Validate extends Model
         if(empty($passRep))
         {
             $this->err['user_passRep'] = "Can`t be empty";
-            $this->oldInput['user_passRep'] = $passRep;
+            $this->oldInput['user_passRep'] = '';
             return false;
         }
 
-        $this->oldInput['user_passRep'] = $passRep;
+        $this->oldInput['user_passRep'] = '';
         return true;
     }
 
@@ -186,13 +186,13 @@ class Validate extends Model
         if($pass !== $passRep)
         {
             $this->err['user_passRep'] = "Passes don`t matches";
-            $this->oldInput['user_passRep'] = $passRep;
+            $this->oldInput['user_passRep'] = '$passRep';
 
             return false;
 
         }
 
-        $this->oldInput['user_passRep'] = $passRep;
+        $this->oldInput['user_passRep'] = '';
         // return $passRep;
         return true;
     }
@@ -209,6 +209,41 @@ class Validate extends Model
         }
 
         $this->oldInput['user_email'] = $email;
+        return true;
+    }
+
+    //check if pass is correct
+    public function passMatchEmail($email, $pass)
+    {
+      
+        $result = $this->select('SELECT email, pass FROM USER WHERE email = ?', [$email]);
+        foreach($result as $key => $value)
+        {
+            if($value->pass)
+            {
+                if(!password_verify($pass, $value->pass))
+                {
+                    $this->err['user_pass'] = "It`s not correct pass";
+                    $this->oldInput['user_pass'] = '';
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+
+    //check if email is unick
+    public function userExists($email)
+    {
+        $result = $this->select('SELECT email FROM USER WHERE email = ?', [$email]);
+        if(empty($result))
+        {
+            $this->err['user_email'] = "Please, signup";
+            $this->oldInput['user_email'] = '';
+            return false;
+        }
+
         return true;
     }
   

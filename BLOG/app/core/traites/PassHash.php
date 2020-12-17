@@ -11,6 +11,9 @@ trait PassHash
 {
     protected function makeHash($pass)
     {
-        return password_hash($pass, PASSWORD_BCRYPT, ["cost" => ConfigLoader::get('COST_HASH')]);
+        
+        $hash = password_hash($pass, PASSWORD_BCRYPT, ['cost' => ConfigLoader::get('COST_HASH')]);
+        // var_dump($hash);
+        return $hash;
     }
 }

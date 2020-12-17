@@ -87,7 +87,7 @@ class AuthController extends Controller
             ],
 
         ]);
-        
+
         if(!$result)
         {
             $data = [
@@ -100,7 +100,7 @@ class AuthController extends Controller
         }else{
             //generate pass hash
             $passhash = $this->makeHash($pass);
-
+            var_dump($passhash);
             //make model user
             $USER = new User($name, $email, $phone, $login, $passhash);
 
@@ -147,7 +147,9 @@ class AuthController extends Controller
             $result = $this->validate->validate($data, [
                 'user_email' => [
                     'emailValidate' => true,
-                    'emailUnique' => true,
+                    'passValidate' => true,
+                    'userExists' => true,
+                    'passMatchEmail' => 'user_pass',
                 ]
             ]);
             
@@ -162,9 +164,10 @@ class AuthController extends Controller
             }
             else{
                 
-                $USER = new User($email, $pass);
+                // $USER = new User($email, $pass);
 
-                var_dump( $this->USER );
+                // var_dump( $this->USER );
+                echo 'kmlkmlmk';
 
             }
         }
