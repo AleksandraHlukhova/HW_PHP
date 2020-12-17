@@ -215,18 +215,15 @@ class Validate extends Model
     //check if pass is correct
     public function passMatchEmail($email, $pass)
     {
-      
-        $result = $this->select('SELECT email, pass FROM USER WHERE email = ?', [$email]);
+        $result = $this->select('SELECT pass FROM USER WHERE email = ?', [$email]);
+        var_dump($result);
         foreach($result as $key => $value)
         {
-            if($value->pass)
+            if(!password_verify($pass, $value->pass))
             {
-                if(!password_verify($pass, $value->pass))
-                {
-                    $this->err['user_pass'] = "It`s not correct pass";
-                    $this->oldInput['user_pass'] = '';
-                    return false;
-                }
+                $this->err['user_pass'] = "It`s not correct pass";
+                $this->oldInput['user_pass'] = '';
+                return false;
             }
         }
         
