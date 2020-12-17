@@ -56,5 +56,20 @@ class Request
 
         return $params;
     }
+
+    /**
+     * get data from post 
+     * @param 
+     * @return array
+     **/
+    public function getData($key = ''): array
+    {
+        if($key)
+        {
+            return $_POST[$key];
+        }
+
+        return $_POST;
+    }
     
 }

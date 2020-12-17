@@ -15,7 +15,7 @@ class Validate extends Model
     public $oldInput = [];
 
 
-    //claen data
+    //clean data
     public function clean($data) {
         $result = [];
 
@@ -34,44 +34,37 @@ class Validate extends Model
     /**
      * validate data
      * @param
-     * @return bool
+     * @return bool true/false
      **/
-    public function validate($name, $email, $phone, $nick, $pass, $passRep, $method = [])
+    public function validate($data, $rules)
     {
-       //valid name
-        $name = $this->nameValidate($name);
-
-       //valid email
-        $email = $this->emailValidate($email);
-            if($email)
-            {  
-                //if signup
-                if($method === 'signup')
+        $result = [];
+        
+        foreach($rules as $key => $rule)
+        {
+            foreach($rule as $method => $value)
+            {
+                if(!array_key_exists($method, $result))
                 {
-                    $email = $this->emailUnique($email);
+                    if(is_string($value))
+                    {
+                        $result[] = $this->$method($data[$key], $data[$value]);
+                    }else{
+                        $result[] = $this->$method($data[$key]);
+                    }
                 }
             }
-
-       //valid phone
-        $phone = $this->phoneValidate($phone);
-
-       //valid nick
-        $nick = $this->nickValidate($nick);
-       
-        //valid pass
-        $pass = $this->passValidate($pass);
-        
-        //valid passRep
-        $passRep = $this->passRepValidate($passRep);
-        //valid passMatches
-        $passMatches = $this->passMatches($pass, $passRep);
-
-        if($name &&  $email &&  $phone &&  $nick &&  $passMatches)
-        {
-            return true;
         }
-
-        return false;
+        //if array has false, return false, else all input is correct
+        foreach($result as $bool)
+        {
+            if(!$bool)
+            {
+                return false;
+            }            
+        }
+                    
+        return true;
     }
 
     //name validate
@@ -109,7 +102,8 @@ class Validate extends Model
         }
 
         $this->oldInput['user_email'] = $email;
-        return $email;
+        // return $email;
+        return true;
     }
 
     //phone validate
@@ -199,7 +193,8 @@ class Validate extends Model
         }
 
         $this->oldInput['user_passRep'] = $passRep;
-        return $passRep;
+        // return $passRep;
+        return true;
     }
 
     //check if email is unick

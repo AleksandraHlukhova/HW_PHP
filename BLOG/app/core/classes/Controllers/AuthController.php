@@ -49,21 +49,44 @@ class AuthController extends Controller
      **/
     public function signup()
     {
+        //get data
+        $data = $this->request->getData();
+        
         //clean data
-        $data = $this->validate->clean($_POST);
+        $data = $this->validate->clean($data);
 
-        $name = $_POST['user_name'];
-        $email = $_POST['user_email'];
-        $phone = $_POST['user_phone'];
-        $login = $_POST['user_nick'];
-        $pass = $_POST['user_pass'];
-        $passRep = $_POST['user_passRep'];
+        $name = $data['user_name'];
+        $email = $data['user_email'];
+        $phone = $data['user_phone'];
+        $login = $data['user_nick'];
+        $pass = $data['user_pass'];
+        $passRep = $data['user_passRep'];
 
-        /**
-         * validate data
-         * @return bool
-         **/
-        $result = $this->validate->validate($name, $email, $phone, $login, $pass, $passRep, $method = 'signup');
+        //return bool
+        $result = $this->validate->validate($data, [
+            'user_name' => [
+                'nameValidate' => true,
+            ],
+            'user_email' => [
+                'emailValidate' => true,
+                'emailUnique' => true,
+            ],
+            'user_phone' => [
+                'phoneValidate' => true,
+            ],
+            'user_nick' => [
+                'nickValidate' => true,
+            ],
+            'user_pass' => [
+                'passValidate' => true,
+                'emailUnique' => true,
+            ],
+            'user_passRep' => [
+                'passRepValidate' => true,
+                'passMatches' => 'user_pass',
+            ],
+
+        ]);
         
         if(!$result)
         {
@@ -111,24 +134,28 @@ class AuthController extends Controller
             return $this->view->render('login', $data = [], 'auth-main');
         }else if($this->request->getMethod() === 'POST')
         {
-            //clean data
-            $data = $this->validate->clean($_POST);
-            die('Stop coding: ' . __FILE__. ' on line:' . __LINE__ . '! make signin tomorrow!');
-            $email = $_POST['user_email'];
-            $pass = $_POST['user_pass'];
+            //get data
+            $data = $this->request->getData();
 
-            /**
-             * validate data
-             * @return bool
-             **/
-            $result = $this->validate->validate($email, $pass);
+            //clean data
+            $data = $this->validate->clean($data);
+
+            // die('Stop coding: ' . __FILE__. ' on line:' . __LINE__ . '! make signin tomorrow!');
+            $email = $data['user_email'];
+            $pass = $data['user_pass'];
+
+            $result = $this->validate->validate($data, [
+                'user_email' => [
+                    'emailValidate' => true,
+                    'emailUnique' => true,
+                ]
+            ]);
             
-            
-            if(count($this->err) > 0)
+            if(!$result)
             {
                 $data = [
-                    'errors' => $this->err,
-                    'oldInput' => $this->oldInput
+                    'errors' => $this->validate->err,
+                    'oldInput' => $this->validate->oldInput
                 ];
 
                 return $this->view->render('login', $data, 'auth-main');
