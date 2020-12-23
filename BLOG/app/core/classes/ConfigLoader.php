@@ -24,5 +24,4 @@ class ConfigLoader
     {
         return self::$config[$param_name];
     }
-    ///таблиці в множині, моделі в однині
 }

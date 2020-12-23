@@ -2,12 +2,10 @@
 
 namespace App\Core\Models;
 
-// use App\Core\Classes\Database\Db;
-
 /**
- * Post class
+ * Comment class
  */
-class Post extends Model
+class Comment extends Model
 {
     public integer $id;
     public integer $user_id;
@@ -18,13 +16,13 @@ class Post extends Model
     public date $date;
 
     /**
-     * get all Post
+     * get all Comments
      * @param
      * @return obj
      **/
     public static function getAll()
     {
-        return self::select('SELECT * FROM posts');
+        return self::select('SELECT * FROM comments');
     }
 
       /**
@@ -34,7 +32,7 @@ class Post extends Model
      **/
     public static function getOne($data, $key, $value)
     {
-        $res = self::select("SELECT $data FROM posts WHERE $key = ?", $value);
+        $res = self::select("SELECT $data FROM comments WHERE $key = ?", $value);
        
         $result = [];
         foreach($res as $value)

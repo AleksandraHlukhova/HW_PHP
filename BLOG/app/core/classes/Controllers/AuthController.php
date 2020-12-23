@@ -38,8 +38,7 @@ class AuthController extends Controller
      **/
     public function index()
     {
-
-        return $this->view->render('signup', $data = [], 'auth-main');
+        return $this->view->render('signup', 'auth-main');
     }
 
     /**
@@ -78,8 +77,7 @@ class AuthController extends Controller
                 'nickValidate' => true,
             ],
             'user_pass' => [
-                'passValidate' => true,
-                'emailUnique' => true,
+                'passValidate' => true
             ],
             'user_passRep' => [
                 'passRepValidate' => true,
@@ -90,36 +88,33 @@ class AuthController extends Controller
 
         if(!$result)
         {
-            $data = [
+            return $this->view->render('signup', 'auth-main', [
                 'errors' => $this->validate->err,
                 'oldInput' => $this->validate->oldInput
-            ];
-
-            return $this->view->render('signup', $data, 'auth-main');
+            ]);
 
         }else{
             //generate pass hash
             $passhash = $this->makeHash($pass);
-            var_dump($passhash);
-            //make model user
-            $USER = new User($name, $email, $phone, $login, $passhash);
 
             //add to db
-            $stmt = $USER->insert("INSERT INTO user (name, email, phone, login, pass) 
+            $stmt = User::insert("INSERT INTO users (name, email, phone, login, pass) 
             VALUES (:name, :email, :phone, :login, :pass)", [':name' => $name, ':email' => $email, ':phone' => $phone, 
             ':login' => $login, ':pass' => $passhash]);
             
             //if was added to db, user is auth
             if($stmt)
             {
-                $_SESSION['auth'] = true;
-                return $this->view->render('profile', $data = [], 'profile-main');
-
+                $id = User::select("SELECT id FROM users WHERE email = ?", [$email])[0]->id;
+                $_SESSION['auth'] = $id;
+                $user = User::select("SELECT * FROM users WHERE id = ?", [$_SESSION['auth']]); 
+                return $this->view->render('profile', 'profile-main', [
+                    'user' => $user
+                ]);
             }else{
                 new CustomException('You were not registred!');
             }
         }
-
     }
 
     /**
@@ -131,7 +126,7 @@ class AuthController extends Controller
     {
         if($this->request->getMethod() === 'GET')
         {
-            return $this->view->render('login', $data = [], 'auth-main');
+            return $this->view->render('login', 'auth-main');
         }else if($this->request->getMethod() === 'POST')
         {
             //get data
@@ -140,7 +135,6 @@ class AuthController extends Controller
             //clean data
             $data = $this->validate->clean($data);
 
-            // die('Stop coding: ' . __FILE__. ' on line:' . __LINE__ . '! make signin tomorrow!');
             $email = $data['user_email'];
             $pass = $data['user_pass'];
 
@@ -155,20 +149,16 @@ class AuthController extends Controller
             
             if(!$result)
             {
-                $data = [
+                return $this->view->render('login', 'auth-main', [
                     'errors' => $this->validate->err,
                     'oldInput' => $this->validate->oldInput
-                ];
-
-                return $this->view->render('login', $data, 'auth-main');
+                ]);
             }
-            else{
-                
-                // $USER = new User($email, $pass);
+            else{  
+                $user = User::select("SELECT * FROM users WHERE email = ?", [$email]);    
+                $_SESSION['auth'] = $user[0]->id;
 
-                // var_dump( $this->USER );
-                echo 'kmlkmlmk';
-
+                return $this->view->render('profile', 'profile-main', ['user' => $user]);
             }
         }
     }
@@ -181,7 +171,9 @@ class AuthController extends Controller
      **/
     public static function issetAuth()
     {
-        if(isset($_SESSION['auth']))
+        $auth = array_key_exists('auth', $_SESSION);
+
+        if($auth)
         {
             return true;
         }
@@ -190,7 +182,7 @@ class AuthController extends Controller
 
 
     /**
-     * undocumented function summary
+     * logout
      * @param 
      * @return 
      **/
@@ -198,7 +190,7 @@ class AuthController extends Controller
     {
         $_SESSION['auth'] = false;
         unset($_SESSION['auth']);
-        return $this->view->render('login', $data = [], 'auth-main');
+        return $this->view->render('login', 'auth-main');
     }
     
 }

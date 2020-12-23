@@ -4,6 +4,10 @@ namespace App\Core\Classes\Controllers;
 
 use App\Core\Models\Post;
 use App\Core\Models\PostPhoto;
+use App\Core\Models\Category;
+use App\Core\Models\PostLike;
+use App\Core\Models\User;
+use App\Core\Models\Bookmark;
 use App\Core\Classes\Database\PdoConnection;
 use App\Core\Classes\Transformers\TransformerInfo;
 // use App\Core\Classes\Request;
@@ -36,15 +40,16 @@ class HomeController extends Controller
     public function index()
     {
 
-        $categories = $this->category->select('SELECT * FROM category');
-        $posts = $this->posts->select('SELECT * FROM post');
-        $postsPhotos = $this->postsPhoto->select('SELECT * FROM post_photos');
-
-        $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos);
-
+        $categories = Category::getAll();
+        $posts = Post::getAll();
+        $postsPhotos = PostPhoto::getAll();
+        $postLikes = PostLike::getAll();
+        $users = User::getAll();
+        $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $users);
+ 
         $this->DB->disconnect();
 
-        return $this->view->render('home', ['info' => $data, 'main' => 1]);
+        return $this->view->render('home', 'main', ['info' => $data]);
     }
 
     /**
@@ -55,19 +60,16 @@ class HomeController extends Controller
     public function post($params)
     {
 
-        $categories = $this->category->select('SELECT * FROM category');
-        $posts = $this->posts->select("SELECT * FROM post WHERE id = ?", [$params['id']]);
+        $categories = Category::getAll();
+        $posts = $this->posts->select("SELECT * FROM posts WHERE id = ?", [$params['post_id']]);
         $postsPhotos = $this->postsPhoto->select('SELECT * FROM post_photos');
-
-        $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos);
+        $postLikes = PostLike::getAll();
+        $users = User::getAll();
+        
+        $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $users);
 
         $this->DB->disconnect();
 
-        return $this->view->render('posts', $data);
-        
+        return $this->view->render('posts', 'main', $data);       
     }
-
-
-    
-    
 }

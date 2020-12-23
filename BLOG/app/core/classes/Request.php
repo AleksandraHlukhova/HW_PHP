@@ -49,10 +49,8 @@ class Request
     public function getParams()
     {
         $params = $_GET; 
-
         //cut first el from array
         array_shift($params);
-        var_dump($params);
 
         return $params;
     }

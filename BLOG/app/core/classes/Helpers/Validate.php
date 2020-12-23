@@ -49,9 +49,14 @@ class Validate extends Model
                     if(is_string($value))
                     {
                         $result[] = $this->$method($data[$key], $data[$value]);
+                    }else if(is_array($value))
+                    {
+                        $result[] = $this->$method($value);
                     }else{
                         $result[] = $this->$method($data[$key]);
+
                     }
+            
                 }
             }
         }
@@ -82,9 +87,7 @@ class Validate extends Model
             $this->oldInput['user_name'] = $name;
 
             return false;
-
         }
-
         $this->oldInput['user_name'] = $name;
         return true;
     }
@@ -92,17 +95,13 @@ class Validate extends Model
     //email validate
     public function emailValidate($email)
     {
-
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $this->err['user_email'] = "Invalid email format";
             $this->oldInput['user_email'] = $email;
 
             return false;
-
         }
-
         $this->oldInput['user_email'] = $email;
-        // return $email;
         return true;
     }
 
@@ -133,7 +132,7 @@ class Validate extends Model
     //nick validate
     public function nickValidate($nick)
     {
-        if (!preg_match("/^[a-zA-Z-' ]*$/",$nick)) {
+        if (!preg_match("/^[a-zA-Z-' ]*/",$nick)) {
             $this->err['user_nick'] = "Only letters and white space allowed";
             $this->oldInput['user_nick'] = $nick;
 
@@ -186,22 +185,19 @@ class Validate extends Model
         if($pass !== $passRep)
         {
             $this->err['user_passRep'] = "Passes don`t matches";
-            $this->oldInput['user_passRep'] = '$passRep';
+            $this->oldInput['user_passRep'] = '';
 
             return false;
-
         }
-
         $this->oldInput['user_passRep'] = '';
-        // return $passRep;
         return true;
     }
 
     //check if email is unick
     public function emailUnique($email)
     {
-        $result = $this->select('SELECT email FROM USER WHERE email = ?', [$email]);
-        if(!empty($result))
+        $result = $this->select('SELECT email FROM users WHERE email = ?', [$email]);
+        if(!empty($result[0]))
         {
             $this->err['user_email'] = "This email is not unique";
             $this->oldInput['user_email'] = $email;
@@ -215,8 +211,7 @@ class Validate extends Model
     //check if pass is correct
     public function passMatchEmail($email, $pass)
     {
-        $result = $this->select('SELECT pass FROM USER WHERE email = ?', [$email]);
-        var_dump($result);
+        $result = $this->select('SELECT pass FROM users WHERE email = ?', [$email]);
         foreach($result as $key => $value)
         {
             if(!password_verify($pass, $value->pass))
@@ -233,12 +228,75 @@ class Validate extends Model
     //check if email is unick
     public function userExists($email)
     {
-        $result = $this->select('SELECT email FROM USER WHERE email = ?', [$email]);
-        if(empty($result))
+        $result = $this->select('SELECT email FROM users WHERE email = ?', [$email]);
+        if(empty($result[0]))
         {
             $this->err['user_email'] = "Please, signup";
             $this->oldInput['user_email'] = '';
             return false;
+        }
+
+        return true;
+    }
+
+    // check title length
+    public function checkLengthTitle($title)
+    {
+
+        if(strlen($title) < ConfigLoader::get('POST_TITLE_MIN_LENGTH'))
+        {
+            $this->err['title'] = "Too short title";
+            $this->oldInput['title'] = $title;
+            return false;
+        }
+        $this->oldInput['title'] = $title;
+        return true;
+    }
+
+    // check description length
+    public function checkLengthDescription($description)
+    {
+        if(strlen($description) < ConfigLoader::get('POST_DESCRIPTION_MIN_LENGTH'))
+        {
+            $this->err['description'] = "Too short description";
+            $this->oldInput['description'] = $description;
+            return false;
+        }
+        $this->oldInput['description'] = $description;
+        return true;
+    }
+
+    //check mime type of photo
+    public function checkMimeType($files)
+    {
+
+        foreach($files as $type)
+        {
+
+            // $type = mime_content_type($file);
+            if($type === 'image/png' || $type === 'image/jpeg')
+            {
+                continue;
+            }else{
+                $this->err['photo'] = "This is not a photo";
+                return false;
+            }
+        }         
+        return true;
+    }
+
+    // check img size
+    public function checkImageSize($sizes)
+    {
+
+        foreach($sizes as $size)
+        {
+            if($size > ConfigLoader::get('PHOTO_SIZE'))
+            {
+                $this->err['photo'] = "Too big photo";
+
+                return false;
+            }
         }
 
         return true;

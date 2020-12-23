@@ -14,7 +14,7 @@ use App\Core\Classes\Errors\CustomException;
 class Model implements ModelInterface
 {
 
-    public $DB;
+    public static $DB;
     private $db_facade;
 
     public function __construct()
@@ -23,8 +23,8 @@ class Model implements ModelInterface
         
         if($this->db_facade === 'PDO')
         {
-            $this->DB = new PdoConnection();
-            $this->DB = $this->DB->dbh;
+            self::$DB = new PdoConnection();
+            self::$DB = self::$DB->dbh;
 
         }
     }
@@ -35,10 +35,9 @@ class Model implements ModelInterface
      * @param $stmt, $params = []
      * @return array
      **/
-    public function select($stmt, $params = [])
+    public static function select($stmt, $params = [])
     {
-
-        $sth = $this->DB->prepare($stmt);
+        $sth = self::$DB->prepare($stmt);
         $sth->execute($params);
         $result = $sth->fetchAll(\PDO::FETCH_OBJ);
         
@@ -50,10 +49,9 @@ class Model implements ModelInterface
      * @param 
      * @return 
      **/
-    public function insert($stmt, $params = [])
+    public static function insert($stmt, $params = [])
     {   
-        $stmt = $this->DB->prepare($stmt);        
-
+        $stmt = self::$DB->prepare($stmt); 
         if($stmt->execute($params))
         {
             return true;
@@ -68,13 +66,30 @@ class Model implements ModelInterface
      * @param 
      * @return 
      **/
-    public function update($stmt, $params = [])
+    public static function update($stmt, $params = [])
     {
-        # code...
+        $stmt = self::$DB->prepare($stmt);   
+        if($stmt->execute($params))
+        {
+            return true;
+        }else{
+            new CustomException('You were not registred!');
+        }
     }
 
-    ////up()
-    ///down() for migrations
-
-
+        /**
+     * update data in database
+     * @param 
+     * @return 
+     **/
+    public static function delate($stmt, $params = [])
+    {
+        $stmt = self::$DB->prepare($stmt);   
+        if($stmt->execute($params))
+        {
+            return true;
+        }else{
+            new CustomException('You were not registred!');
+        }
+    }
 }

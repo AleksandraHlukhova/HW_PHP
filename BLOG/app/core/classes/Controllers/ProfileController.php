@@ -1,39 +1,25 @@
 <?php
 
 namespace App\Core\Classes\Controllers;
-
-use App\Core\Classes\Database\PdoConnection;
 use App\Core\Models\User;
-use App\Core\Classes\Request;
-use App\Core\Classes\Errors\CustomException;
 
 /**
- * AuthController class
+ * ProfileController class
  */
-class AuthController extends Controller
+class ProfileController extends Controller
 {
-
-    public PdoConnection $DB;
-    public Request $request;
-
-    use PassHash;
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->DB = new PdoConnection();
-        $this->request = new Request();
-    }
 
     /**
      * show profile
      * @param 
      * @return 
      **/
-    public function profile()
+    public function index()
     {
-        return $this->view->render('profile', $data = [], 'profile-main');
+        $user = User::select("SELECT * FROM users WHERE id = ?", [$_SESSION['auth']]); 
+        return $this->view->render('profile', 'profile-main', [
+            'user' => $user
+        ]);
     }
     
 }

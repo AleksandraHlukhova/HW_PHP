@@ -25,7 +25,6 @@ class Router
     public function get($path, $callback)
     {
         $this->routes['GET'][$path] = $callback;
-
     }
 
     /**
@@ -49,17 +48,16 @@ class Router
         $path = $this->request->getPath();
         $method = $this->request->getMethod();
         $params = $this->request->getParams();
-// var_dump($path);
-// exit;
+        
         if(!$params)
         {
             $callback = $this->routes[$method][$path];
-
         }
-        else
+
+        if($params)
         {
-            $path = '/' . str_replace('/', '', $path);
-            $callback = $this->routes[$method][$path];
+            // $path = $this->request->getPath();
+            $callback = $this->routes[$method][$path];      
         }
 
         if(is_string($callback))

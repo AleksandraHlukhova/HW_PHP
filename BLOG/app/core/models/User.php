@@ -7,7 +7,7 @@ namespace App\Core\Models;
  */
 class User extends Model
 {
-    public integer $id;
+    public static $id;
     public string $name;
     public string $email;
     public string $phone;
@@ -27,11 +27,21 @@ class User extends Model
     }
     
     /**
+     * get all PostPhoto
+     * @param
+     * @return obj
+     **/
+    public static function getAll()
+    {
+        return self::select('SELECT * FROM users');
+    }
+
+    /**
      * Get the value of id
      */ 
-    public function getId()
+    public static function getId()
     {
-        return $this->id;
+        return self::$id;
     }
 
     /**
@@ -39,11 +49,11 @@ class User extends Model
      *
      * @return  self
      */ 
-    public function setId($id)
+    public static function setId($id)
     {
-        $this->id = $id;
+        self::$id = $id;
 
-        return $this;
+        return self::$id;
     }
 
     /**
@@ -145,4 +155,5 @@ class User extends Model
 
         return $this;
     }
+
 }

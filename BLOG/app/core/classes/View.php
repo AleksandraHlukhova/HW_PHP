@@ -13,7 +13,7 @@ class View
      * @param $view
      * @return tmpl
      **/
-    public function render($view, $data = [], $layout = 'main')
+    public function render($view, $layout, $data = [])
     {
         $layout = $this->loadLayout($data, $layout);
         $content = $this->loadContent($view, $data);
