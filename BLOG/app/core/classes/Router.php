@@ -56,7 +56,6 @@ class Router
 
         if($params)
         {
-            // $path = $this->request->getPath();
             $callback = $this->routes[$method][$path];      
         }
 

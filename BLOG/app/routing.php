@@ -19,7 +19,7 @@ $app::$router->get('auth/profile', [ProfileController::class, 'index']);
 $app::$router->get('post/index', [PostController::class, 'index']);
 $app::$router->post('post/add', [PostController::class, 'add']);
 $app::$router->get('post/show', [PostController::class, 'show']);
-$app::$router->get('post/showone', [PostController::class, 'showOne']);
+$app::$router->get('post/showOne', [PostController::class, 'showOne']);
 $app::$router->post('post/showOne', [PostController::class, 'showOne']);
 $app::$router->get('post/delete', [PostController::class, 'delete']);
 

@@ -103,7 +103,7 @@
             </div>
             <?php endif;?>
 
-            <?php if($sum === 1 && isset($_SESSION['auth']) && $_SESSION['auth'] === $post->user_id):?>
+            <?php if($sum === 1 && App\Core\Classes\Controllers\AuthController::issetAuth() && $_SESSION['auth'] === $post->user_id):?>
             <div class="col-7">
                 <p>Your can`t add comments to your posts</p>
             </div>
@@ -138,11 +138,14 @@
                     </div>
                     <p style="margin-top:10px">
                         <?= $comment->description;?>
+                        <?php if(App\Core\Classes\Controllers\AuthController::issetAuth()): ?>
+
                         <?php if($user->id === $_SESSION['auth']): ?>
                         <a class="del-comment"
                             href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']). '?action=comment/delComment&comment_id='. $comment->id . '&post_id=' . $post->id?>">del
                             comment
                         </a>
+                        <?php endif; ?>
                         <?php endif; ?>
                     </p>
                 </div>

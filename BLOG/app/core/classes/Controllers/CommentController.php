@@ -58,6 +58,7 @@ class CommentController extends Controller
         $comment_id = $params['comment_id'];
          
         $stmt = Comment::delate('DELETE FROM comments WHERE id=:id AND post_id=:post_id', [':id' => $comment_id, ':post_id' => $post_id]);
+
         if($stmt)
         {
             header("Location: ". $_SERVER['HTTP_REFERER']);
