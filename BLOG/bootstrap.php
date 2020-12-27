@@ -14,7 +14,6 @@ $dotenv->load();
 $config = new ConfigLoader($_ENV);
 
 $app = Application::getInstance();
-$app1 = Application::getInstance();
 
 require_once __DIR__ . '/app/routing.php';
 
