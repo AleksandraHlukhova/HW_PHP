@@ -12,7 +12,7 @@ class TransformerInfo
      * @param Type $var Description
      * @return type
      **/
-    public function transformIndex($categories, $posts, $postsPhotos, $postLikes, $users)
+    public function transformIndex($categories, $posts, $postsPhotos, $postLikes, $bookmarks, $users)
     {
         $data = [];
 
@@ -25,6 +25,7 @@ class TransformerInfo
             {
                 $photoPosts = [];
                 $likePosts = [];
+                $bookmarkPosts = [];
                 $userPosts = [];
 
                 if($category->id === $post->category_id)
@@ -49,6 +50,15 @@ class TransformerInfo
                 }
                 $post->likes = $likePosts;
 
+                foreach($bookmarks as $bookId => $bookmark)
+                { 
+                    if($post->id === $bookmark->post_id)
+                    {
+                        $bookmarkPosts[] = $bookmark;
+                    }
+                }
+                $post->bookmarks = $bookmarkPosts;
+
                 foreach($users as $userId => $user)
                 { 
                     if($user->id === $post->user_id)
@@ -72,7 +82,7 @@ class TransformerInfo
      * @param Type $var Description
      * @return type
      **/
-    public function transformQuinta($categories, $posts, $postLikes, $postsPhotos, $comments, $users)
+    public function transformForOnePost($categories, $posts, $postLikes, $postsPhotos, $bookmarks, $comments, $users)
     {
         $data = [];
 
@@ -85,6 +95,7 @@ class TransformerInfo
             {
                 $photoPosts = [];
                 $commentPosts = [];
+                $bookmarkPosts = [];
                 $likePosts = [];
 
                 if($category->id === $post->category_id)
@@ -101,7 +112,15 @@ class TransformerInfo
                 }
                     $post->photos = $photoPosts;
 
-
+                foreach($bookmarks as $bookmarkId => $bookmark)
+                {
+                    
+                    if($post->id === $bookmark->post_id)
+                    {
+                        $bookmarkPosts[] = $bookmark;
+                    }
+                }
+                    $post->bookmarks = $bookmarkPosts;
 
                     foreach($postLikes as $likeId => $like)
                 {
@@ -262,6 +281,86 @@ class TransformerInfo
 
             $like->posts = $likePosts;
             $data[] = $like;
+        }
+
+        return $data;
+    }
+
+    /**
+     * transform info from db in BookmarkController:index
+     * @param Type $var Description
+     * @return type
+     **/
+    public function transformBookmarkPost($categories, $comments, $posts, $users, $likes, $bookmarks, $postPhotos)
+    {
+        $data = [];
+
+        foreach($bookmarks as $bookmarkId => &$bookmark)
+        {
+
+            $bookmarkPosts = [];
+
+            foreach($posts as $postId => &$post)
+            {
+                $catPosts = [];
+                $userPosts = [];
+                $commPosts = [];
+                $likePosts = [];
+                $photoPosts = [];
+
+                if($post->id === $bookmark->post_id)
+                {
+
+                    $bookmarkPosts[] = $post;
+                }
+
+                    foreach($users as $userId => $user)
+                    {    
+
+                        if($user->id === $post->user_id)
+                        {
+                            $userPosts[] = $user;
+                        }
+
+                    }
+
+
+                    foreach($comments as $commd => $comment)
+                    {    
+                        if($post->id === $comment->post_id)
+                        {
+                            $commPosts[] = $comment;
+                        }
+
+                    }
+
+                    foreach($likes as $likeId => $like)
+                    {    
+                        if($post->id === $like->post_id)
+                        {
+                            $likePosts[] = $like;
+                        }
+
+                    }
+
+                    foreach($postPhotos as $photoIdd => $photo)
+                    {    
+                        if($post->id === $photo->post_id)
+                        {
+                            $photoPosts[] = $photo;
+                        }
+
+                    }
+                    $post->users = $userPosts;
+                    $post->comments = $commPosts;
+                    $post->likes = $likePosts;
+                    $post->photos = $photoPosts;
+
+
+            }
+
+            $bookmark->posts = $bookmarkPosts;
+            $data[] = $bookmark;
         }
 
         return $data;
