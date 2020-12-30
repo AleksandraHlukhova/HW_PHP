@@ -44,7 +44,7 @@
                     <li><a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']). '?action=post/show' ?>">
                             <i class='bx bxs-book-alt'></i><span>My posts</span>
                         </a></li>
-                    <li><a href="#resume"><i class='bx bxs-bookmark'></i><span>Bookmark</span></a></li>
+                    <li><a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']). '?action=bookmark/index' ?>"><i class='bx bxs-bookmark'></i><span>Bookmark</span></a></li>
                     <li class=""><a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']). '?action=comment/index' ?>"><i class='bx bxs-comment-detail'></i></i>Comments</a></li>
                     <li><a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']). '?action=like/index' ?>"><i class='bx bxs-like'></i>Likes</a></li>
                     <li><a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']). '?action=auth/logout' ?>"><i
