@@ -6,6 +6,7 @@ use App\Core\Classes\Controllers\ProfileController;
 use App\Core\Classes\Controllers\PostController;
 use App\Core\Classes\Controllers\CommentController;
 use App\Core\Classes\Controllers\LikeController;
+use App\Core\Classes\Controllers\BookmarkController;
 
 
 $app::$router->get('/', [HomeController::class, 'index']);
@@ -26,8 +27,9 @@ $app::$router->get('post/delete', [PostController::class, 'delete']);
 $app::$router->get('comment/index', [CommentController::class, 'index']);
 $app::$router->get('comment/delComment', [CommentController::class, 'delComment']);
 $app::$router->get('like/index', [LikeController::class, 'index']);
+$app::$router->get('bookmark/index', [BookmarkController::class, 'index']);
 
-$app::$router->get('post/bookmark', [PostController::class, 'bookmark']);
+$app::$router->get('post/bookmark', [BookmarkController::class, 'postBookmarks']);
 $app::$router->get('post/like', [LikeController::class, 'postLikes']);
 
 
