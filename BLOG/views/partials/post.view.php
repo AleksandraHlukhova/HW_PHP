@@ -4,6 +4,7 @@
         <?php foreach($data['info'] as $item):?>
         <?php foreach($item->posts as $post):?>
         <?php $sumLikes = 0;?>
+        <?php $sumBookmarks = 0;?>
 
         <!-- Post-->
         <div class="row d-flex align-items-stretch mb-4">
@@ -28,7 +29,7 @@
                         </p>
 
                         <footer class="post-footer d-flex align-items-center row">
-                            <div class="col-10">
+                            <div class="col-9">
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="div align-items-center"
@@ -46,7 +47,7 @@
                                 </div>
                             </div>
                             <?php if(App\Core\Classes\Controllers\AuthController::issetAuth()):?>
-                            <div class="col-2">
+                            <div class="col-3">
                                 <?php foreach($post->likes as $like): ?>
                                 <?php $sumLikes += $like->status;?>
                                 <?php if($like->user_id === $_SESSION['auth'] && $like->status):?>
@@ -65,9 +66,18 @@
                                     href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']). '?action=post/like&post_id='.$post->id ?>">
                                     <i class='bx bxs-heart-circle'><?= $sumLikes?></i>
                                 </a>
+                                <?php foreach($post->bookmarks as $bookmark): ?>
+                                <?php $sumBookmarks += $bookmark->status;?>
+                                <?php if($bookmark->user_id === $_SESSION['auth'] && $bookmark->status):?>
                                 <a
                                     href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']). '?action=post/bookmark&post_id='.$post->id ?>">
-                                    <i class='bx bxs-bookmark-alt-plus'></i>
+                                    <i class='bx bxs-bookmark-alt-plus' style="color:red"></i>
+                                </a>
+                                <?php endif; ?>
+                                <?php endforeach; ?>
+                                <a
+                                    href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']). '?action=post/bookmark&post_id='.$post->id ?>">
+                                    <i class='bx bxs-bookmark-alt-plus'><?= $sumBookmarks?></i>
                                 </a>
                             </div>
                             <?php endif;?>
