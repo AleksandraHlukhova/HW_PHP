@@ -44,9 +44,12 @@ class HomeController extends Controller
         $posts = Post::getAll();
         $postsPhotos = PostPhoto::getAll();
         $postLikes = PostLike::getAll();
+        $bookmarks = Bookmark::getAll();
         $users = User::getAll();
-        $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $users);
- 
+        $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $bookmarks, $users);
+//  echo "<pre>";
+// var_dump($data);
+// exit;
         $this->DB->disconnect();
 
         return $this->view->render('home', 'main', ['info' => $data]);
@@ -64,12 +67,13 @@ class HomeController extends Controller
         $posts = $this->posts->select("SELECT * FROM posts WHERE id = ?", [$params['post_id']]);
         $postsPhotos = $this->postsPhoto->select('SELECT * FROM post_photos');
         $postLikes = PostLike::getAll();
+        $bookmarks = Bookmark::getAll();
         $users = User::getAll();
         
-        $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $users);
+        $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $bookmarks, $users);
 
         $this->DB->disconnect();
 
-        return $this->view->render('posts', 'main', $data);       
+        return $this->view->render('posts', 'main', ['info' => $data]);       
     }
 }

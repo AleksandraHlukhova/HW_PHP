@@ -7,6 +7,7 @@ use App\Core\Models\User;
 use App\Core\Models\Post;
 use App\Core\Models\PostPhoto;
 use App\Core\Models\Comment;
+use App\Core\Models\Bookmark;
 use App\Core\Models\PostLike;
 use App\Core\Classes\Request;
 use App\Core\Classes\Helpers\Validate;
@@ -157,9 +158,10 @@ class PostController extends Controller
         $postsPhotos = PostPhoto::getAll();
         $user = User::select("SELECT * FROM users WHERE id = ?", [$_SESSION['auth']]); 
         $postLikes = PostLike::getAll();
+        $bookmarks = Bookmark::getAll();
         $users = User::getAll();
 
-        $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $users);
+        $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $bookmarks, $users);
 
         return $this->view->render('profile-my-post', 'profile-main', [
             'info' => $data,
@@ -179,12 +181,15 @@ class PostController extends Controller
         $categories = Category::getAll();
         $posts = Post::select('SELECT * FROM posts WHERE id = ?', [$post_id]);
         $postsPhotos = PostPhoto::getAll();
+        $bookmarks = Bookmark::getAll();
         $comments = Comment::select('SELECT * FROM comments WHERE post_id=?', [$post_id]);
         $users = User::getAll();
         $postLikes = PostLike::getAll();
 
-        $dataQ = $this->transformer->transformQuinta($categories, $posts, $postLikes, $postsPhotos, $comments, $users);
-
+        $dataQ = $this->transformer->transformForOnePost($categories, $posts, $postLikes, $postsPhotos, $bookmarks, $comments, $users);
+        // echo '<pre>';
+        // var_dump($dataQ);
+        // exit;
         if($this->request->getMethod() === 'POST')
         {
             //get data
@@ -220,7 +225,7 @@ class PostController extends Controller
         
         $comments = Comment::select('SELECT * FROM comments WHERE post_id=?', [$post_id]);
 
-        $dataQ = $this->transformer->transformQuinta($categories, $posts, $postLikes, $postsPhotos, $comments, $users);
+        //$dataQ = $this->transformer->transformForOnePost($categories, $posts, $postLikes, $postsPhotos, $bookmarks, $comments, $users);
          //if was added to db, user is auth
         if($stmt)
         {
@@ -255,9 +260,10 @@ class PostController extends Controller
             $categories = Category::getAll();
             $postsPhotos = PostPhoto::getAll();
             $postLikes = PostLike::getAll();
+            $bookmarks = Bookmark::getAll();
             $users = User::getAll();
 
-            $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $users);
+            $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $bookmarks, $users);
             
             return $this->view->render('profile-edit-post', 'profile-main', [
                 'info' => $data,
@@ -311,9 +317,10 @@ class PostController extends Controller
             $postsPhotos = PostPhoto::getAll();
     
             $postLikes = PostLike::getAll();
+            $bookmarks = Bookmark::getAll();
             $users = User::getAll();
 
-            $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $users);
+            $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $bookmarks, $users);
             return $this->view->render('profile-edit-post','profile-main', [
                 'info' => $data,
                 'errors' => $this->validate->err,
@@ -404,9 +411,10 @@ class PostController extends Controller
             $categories = Category::getAll();
             $postsPhotos = PostPhoto::getAll();
             $postLikes = PostLike::getAll();
+            $bookmark = Bookmark::getAll();
             $users = User::getAll();
 
-            $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $users);
+            $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $bookmark, $users);
             return $this->view->render('profile-edit-post', 'profile-main', [
                 'info' => $data,
                 'user' => $user
