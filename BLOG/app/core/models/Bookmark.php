@@ -14,7 +14,7 @@ class Bookmark extends Model
      **/
     public static function getAll()
     {
-        return self::select('SELECT * FROM comments');
+        return self::select('SELECT * FROM post_bookmarks');
     }
 
 }
