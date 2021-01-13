@@ -12,7 +12,7 @@ class TransformerInfo
      * @param Type $var Description
      * @return type
      **/
-    public function transformIndex($categories, $posts, $postsPhotos, $postLikes, $bookmarks, $users, $comments)
+    public function transformIndex($categories, $posts, $postsPhotos, $postLikes, $bookmarks, $users, $comments = [])
     {
         $data = [];
 
@@ -74,16 +74,20 @@ class TransformerInfo
                     }
                 }
                 $post->users = $userPosts;
-                
-                $summC = 0;
-                foreach($comments as $commId => $comment)
-                { 
-                    if($comment->post_id === $post->id)
-                    {
-                        $summC++;
+              
+                if(count($comments) > 0)
+                {
+                    $summC = 0;
+                    foreach($comments as $commId => $comment)
+                    { 
+                        if($comment->post_id === $post->id)
+                        {
+                            $summC++;
+                        }
                     }
+                    $post->commSum = $summC;
                 }
-                $post->commSum = $summC;
+                
 
             }
             $category->posts = $catPosts;

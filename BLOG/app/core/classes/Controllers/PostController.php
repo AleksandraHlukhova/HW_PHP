@@ -263,7 +263,6 @@ class PostController extends Controller
             $postLikes = PostLike::getAll();
             $bookmarks = Bookmark::getAll();
             $users = User::getAll();
-
             $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $bookmarks, $users);
             
             return $this->view->render('profile-edit-post', 'profile-main', [
@@ -287,7 +286,7 @@ class PostController extends Controller
                 'checkLengthDescription' => true,
             ]
         ]);
-   
+
         if($photosInfo)
         {
             $result[] = $this->validate->validate($photosInfo['photos'], [
@@ -314,7 +313,7 @@ class PostController extends Controller
 
         if(!$result)
         {
-            $post = Post::select('SELECT * FROM posts WHERE id = ?', [$params['post_id']]);
+            $posts = Post::select('SELECT * FROM posts WHERE id = ?', [$params['post_id']]);
             $postsPhotos = PostPhoto::getAll();
     
             $postLikes = PostLike::getAll();
