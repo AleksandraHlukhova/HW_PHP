@@ -160,8 +160,9 @@ class PostController extends Controller
         $postLikes = PostLike::getAll();
         $bookmarks = Bookmark::getAll();
         $users = User::getAll();
+        $comments = Comment::getAll();
 
-        $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $bookmarks, $users);
+        $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $bookmarks, $users, $comments);
 
         return $this->view->render('profile-my-post', 'profile-main', [
             'info' => $data,
@@ -205,7 +206,7 @@ class PostController extends Controller
 
         if(!$result)
         {
-            return $this->view->render('post','main', [
+            return $this->view->render('onePost','main', [
                 'errors' => $this->validate->err,
                 'oldInput' => $this->validate->oldInput
             ]);
@@ -229,18 +230,18 @@ class PostController extends Controller
          //if was added to db, user is auth
         if($stmt)
         {
-            return $this->view->render('posts', 'main', [
+            return $this->view->render('onePost', 'main', [
                 'info' => $dataQ
             ]);
  
         }else{
             new CustomException('You were not registred!');
-            return $this->view->render('posts', 'main', [
+            return $this->view->render('onePost', 'main', [
                 'info' => $dataQ
             ]);
         }
         }
-        return $this->view->render('posts', 'main', [
+        return $this->view->render('onePost', 'main', [
             'info' => $dataQ
         ]);
     }

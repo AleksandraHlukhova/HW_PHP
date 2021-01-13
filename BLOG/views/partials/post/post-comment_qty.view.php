@@ -1,0 +1,1 @@
+<div class="comments"><i class="icon-comment"></i><?= $post->commSum?></div>

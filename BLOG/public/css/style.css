@@ -2879,4 +2879,9 @@ textarea{
     border: 1px solid grey;
     background-color: rgb(131, 156, 180);
     margin-left: 20px;
+    color: white;
+}
+
+.content{
+    width: 100%;
 }

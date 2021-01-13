@@ -7,6 +7,7 @@ use App\Core\Models\Post;
 use App\Core\Models\Comment;
 use App\Core\Models\Category;
 use App\Core\Models\PostLike;
+use App\Core\Models\Bookmark;
 use App\Core\Classes\Errors\CustomException;
 
 /**
@@ -30,16 +31,20 @@ class CommentController extends Controller
      **/
     public function index()
     {
-        $comments = Comment::select("SELECT * FROM comments WHERE user_id = ? ORDER BY `date` DESC", [$_SESSION['auth']]); 
+        $yourComments = Comment::select("SELECT * FROM comments WHERE user_id = ? ORDER BY `date` DESC", [$_SESSION['auth']]); 
         $posts = Post::select("SELECT * FROM posts ");
         $categories = Category::getAll();
         $likes = PostLike::getAll();
+        $bookmarks = Bookmark::getAll();
+        $comments = Comment::getAll();
         $writers = User::getAll();
 
         $user = User::select("SELECT * FROM users WHERE id=?", [$_SESSION['auth']]);
 
-        $data = $this->transformer->transformCommentPost($categories, $comments, $posts, $writers, $likes);
-    
+        $data = $this->transformer->transformCommentPost($categories, $yourComments, $posts, $writers, $likes, $bookmarks, $comments);
+//              echo "<pre>";
+// var_dump($data);
+// exit;
         return $this->view->render('mycomments', 'profile-main', [
             'info' => $data,
             'user' => $user

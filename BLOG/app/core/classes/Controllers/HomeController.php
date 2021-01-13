@@ -8,6 +8,7 @@ use App\Core\Models\Category;
 use App\Core\Models\PostLike;
 use App\Core\Models\User;
 use App\Core\Models\Bookmark;
+use App\Core\Models\Comment;
 use App\Core\Classes\Database\PdoConnection;
 use App\Core\Classes\Transformers\TransformerInfo;
 // use App\Core\Classes\Request;
@@ -46,13 +47,18 @@ class HomeController extends Controller
         $postLikes = PostLike::getAll();
         $bookmarks = Bookmark::getAll();
         $users = User::getAll();
-        $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $bookmarks, $users);
-//  echo "<pre>";
+        $comments = Comment::getAll();
+        $data = $this->transformer->transformIndex($categories, $posts, $postsPhotos, $postLikes, $bookmarks, $users, $comments);
+        $categories = Category::getAll();
+        
+        $latestPost = $this->posts->select("SELECT * FROM posts ORDER BY id DESC LIMIT 1 ");
+        $latestPost = $this->transformer->transformLatestPost($latestPost, $categories, $postsPhotos);
+//          echo "<pre>";
 // var_dump($data);
 // exit;
         $this->DB->disconnect();
 
-        return $this->view->render('home', 'main', ['info' => $data]);
+        return $this->view->render('home', 'main', ['info' => $data, 'latestPost' => $latestPost]);
     }
 
     /**

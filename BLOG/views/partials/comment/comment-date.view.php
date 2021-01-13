@@ -1,0 +1,1 @@
+<div class="date"><i class="icon-clock"></i><?= $comment->date ?></div>

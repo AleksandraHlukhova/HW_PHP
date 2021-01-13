@@ -29,16 +29,17 @@ class BookmarkController extends Controller
      **/
     public function index()
     {
-        $bookmarks = Bookmark::select("SELECT * FROM post_bookmarks WHERE user_id = ?", [$_SESSION['auth']]);
+        $myBookmarks = Bookmark::select("SELECT * FROM post_bookmarks WHERE user_id = ?", [$_SESSION['auth']]);
         $likes = PostLike::getAll(); 
         $posts = Post::getAll();
         $categories = Category::getAll();
         $comments = Comment::getAll();
         $postPhotos = PostPhoto::getAll();
+        $bookmarks = Bookmark::getAll();
         $writers = User::getAll();
         $user = User::select("SELECT * FROM users WHERE id = ?", [$_SESSION['auth']]);
 
-        $data = $this->transformer->transformBookmarkPost($categories, $comments, $posts, $writers, $likes, $bookmarks, $postPhotos);
+        $data = $this->transformer->transformBookmarkPost($categories, $comments, $posts, $writers, $likes, $myBookmarks, $postPhotos, $bookmarks);
         // echo '<pre>';
         // var_dump($data);
         // exit;
