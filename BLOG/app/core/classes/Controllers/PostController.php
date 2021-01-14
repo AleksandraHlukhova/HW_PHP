@@ -188,9 +188,7 @@ class PostController extends Controller
         $postLikes = PostLike::getAll();
 
         $dataQ = $this->transformer->transformForOnePost($categories, $posts, $postLikes, $postsPhotos, $bookmarks, $comments, $users);
-        // echo '<pre>';
-        // var_dump($dataQ);
-        // exit;
+
         if($this->request->getMethod() === 'POST')
         {
             //get data
@@ -427,19 +425,6 @@ class PostController extends Controller
             ]);
         }
         
-    }
-
-    /**
-     * delate bookmark
-     * @param 
-     * @return 
-     **/
-
-    public function bookmark($params)
-    {
-        var_dump($params);
-        exit;
-
     }
     
 }

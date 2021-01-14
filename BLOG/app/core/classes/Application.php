@@ -11,7 +11,6 @@ class Application
 
     static private $_instance = null;
 
-
     public static string $BASE_URL;
     public static string $BASE_PATH;
     public static Router $router;
@@ -25,7 +24,7 @@ class Application
     }
 
     /**
-     * undocumented function summary
+     * run application
      * @param 
      * @return 
     **/

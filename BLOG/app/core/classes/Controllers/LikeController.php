@@ -40,9 +40,7 @@ class LikeController extends Controller
         $user = User::select("SELECT * FROM users WHERE id = ?", [$_SESSION['auth']]);
 
         $data = $this->transformer->transformLikesPost($categories, $comments, $posts, $writers, $myLikes, $postPhotos, $likes, $bookmarks);
-// echo '<pre>';
-// var_dump($data);
-// exit;
+
         return $this->view->render('mylikes', 'profile-main', [
             'info' => $data,
             'user' => $user
@@ -63,8 +61,7 @@ class LikeController extends Controller
         $user_id =  $user[0]->id;
         
         $status = PostLike::select('SELECT status FROM post_likes WHERE user_id=:user_id AND post_id=:post_id', [':user_id' => $user_id, ':post_id' => $post_id]);
-        // var_dump($post_id, $user_id, $status);
-        // exit;
+    
         if($status)
         {
             $stmt = PostLike::delate("DELETE FROM post_likes WHERE user_id=:user_id AND post_id=:post_id", [':user_id' => $user_id, ':post_id' => $post_id]);

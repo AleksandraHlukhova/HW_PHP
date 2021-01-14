@@ -53,9 +53,7 @@ class HomeController extends Controller
         
         $latestPost = $this->posts->select("SELECT * FROM posts ORDER BY id DESC LIMIT 1 ");
         $latestPost = $this->transformer->transformLatestPost($latestPost, $categories, $postsPhotos);
-//          echo "<pre>";
-// var_dump($data);
-// exit;
+
         $this->DB->disconnect();
 
         return $this->view->render('home', 'main', ['info' => $data, 'latestPost' => $latestPost]);

@@ -25,7 +25,6 @@ class Request
         else
         {
             $path = $_GET['action'];
-
         }
         
         return $path;

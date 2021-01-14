@@ -86,15 +86,11 @@ class TransformerInfo
                         }
                     }
                     $post->commSum = $summC;
-                }
-                
-
+                }      
             }
             $category->posts = $catPosts;
             $data[] = $category;
-
         }
-
         return $data;
     }
 
@@ -109,34 +105,28 @@ class TransformerInfo
 
         foreach($latestPost as $postId => &$post)
         {
-
             $catPosts = [];
             $photoPosts = [];
 
             foreach($categories as $cattId => $category)
             {
-
                 if($category->id === $post->category_id)
                 {
                     $catPosts[] = $category;
                 }
-
             }
             foreach($postsPhotos as $photo)
             {
-
                 if($photo->post_id === $post->id)
                 {
                     $photoPosts[] = $photo;
                 }
-
             }
             $post->categories = $catPosts;
             $post->photos = $photoPosts;
 
         }
         $data[] = $post;
-
         return $data;
     }
 
@@ -151,7 +141,6 @@ class TransformerInfo
 
         foreach($categories as $catId => &$category)
         {
-
             $catPosts = [];
 
             foreach($posts as $postId => &$post)
@@ -162,14 +151,12 @@ class TransformerInfo
                 $bookmarkPosts = [];
                 $likePosts = [];
 
-
                 if($category->id === $post->category_id)
                 {
                     $catPosts[] = $post;
                 }
                 foreach($postsPhotos as $photoId => $photo)
-                {
-                    
+                {  
                     if($post->id === $photo->post_id)
                     {
                         $photoPosts[] = $photo;
@@ -185,11 +172,10 @@ class TransformerInfo
                         }
                     }
                         $post->users = $userPosts;
-                
+            
                 $summB = 0;
                 foreach($bookmarks as $bookmarkId => $bookmark)
-                {
-                    
+                {      
                     if($post->id === $bookmark->post_id)
                     {
                         $summB++;
@@ -252,7 +238,6 @@ class TransformerInfo
 
         foreach($yourComments as $commId => &$yourComment)
         {
-
             $commPosts = [];
             foreach($posts as $postId => &$post)
             {
@@ -281,7 +266,6 @@ class TransformerInfo
                         {
                             $userPosts[] = $user;
                         }
-
                     }
 
                     $summL = 0;
@@ -292,7 +276,6 @@ class TransformerInfo
                             $summL++;
                             $likePosts[] = $like;
                         }
-
                     }
 
                     $summB = 0;
@@ -303,7 +286,6 @@ class TransformerInfo
                             $summB++;
                             $bookmarkPosts[] = $bookmark;
                         }
-
                     }
 
                     $summC = 0;
@@ -314,7 +296,6 @@ class TransformerInfo
                             $summC++;
                             $comm[] = $comment;
                         }
-
                     }
                     $post->users = $userPosts;
                     $post->likes = $likePosts;
@@ -344,7 +325,6 @@ class TransformerInfo
 
         foreach($myLikes as $likeId => &$myLike)
         {
-
             $likePosts = [];
 
             foreach($posts as $postId => &$post)
@@ -358,27 +338,22 @@ class TransformerInfo
 
                 if($post->id === $myLike->post_id)
                 {
-
                     $likePosts[] = $post;
                 }
 
                     foreach($categories as $category)
                     {    
-
                         if($post->category_id === $category->id)
                         {
                             $catPosts[] = $category;
                         }
-
                     }
                     foreach($users as $userId => $user)
                     {    
-
                         if($user->id === $post->user_id)
                         {
                             $userPosts[] = $user;
                         }
-
                     }
 
                     $summC = 0;
@@ -389,7 +364,6 @@ class TransformerInfo
                             $summC++;
                             $commPosts[] = $comment;
                         }
-
                     }
                     $summL = 0;
                     foreach($likes as $like)
@@ -399,7 +373,6 @@ class TransformerInfo
                             $summL++;
                             $likeP[] = $like;
                         }
-
                     }
                     $summB = 0;
                     foreach($bookmarks as $bookmark)
@@ -409,7 +382,6 @@ class TransformerInfo
                             $summB++;
                             $bookmarkPosts[] = $bookmark;
                         }
-
                     }
 
                     foreach($postPhotos as $photoIdd => $photo)
@@ -418,7 +390,6 @@ class TransformerInfo
                         {
                             $photoPosts[] = $photo;
                         }
-
                     }
                     $post->users = $userPosts;
 
@@ -451,7 +422,6 @@ class TransformerInfo
 
         foreach($myBookmarks as $bookmarkId => $myBookmark)
         {
-
             $bookmarkPosts = [];
 
             foreach($posts as $postId => &$post)
@@ -466,8 +436,7 @@ class TransformerInfo
 
                 if($post->id === $myBookmark->post_id)
                 {
-                    $bookmarkPosts[] = $post;
-                    
+                    $bookmarkPosts[] = $post;    
                 }
                     foreach($categories as $category)
                     {    
@@ -476,16 +445,13 @@ class TransformerInfo
                         {
                             $categoryPosts[] = $category;
                         }
-
                     }
                     foreach($users as $userId => $user)
                     {    
-
                         if($user->id === $post->user_id)
                         {
                             $userPosts[] = $user;
                         }
-
                     }
 
                     $summC = 0;
@@ -496,7 +462,6 @@ class TransformerInfo
                             $summC++;
                             $commPosts[] = $comment;
                         }
-
                     }
                     $post->commSum = $summC;
                     $summL = 0;
@@ -517,7 +482,6 @@ class TransformerInfo
                         {
                             $photoPosts[] = $photo;
                         }
-
                     }
                     $summB = 0;
                     foreach($bookmarks as $bookmark)
@@ -527,7 +491,6 @@ class TransformerInfo
                             $summB++;
                             $bookPosts[] = $bookmark;
                         }
-
                     }
                     $post->bookmarkSum = $summB;
 

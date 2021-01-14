@@ -42,9 +42,7 @@ class CommentController extends Controller
         $user = User::select("SELECT * FROM users WHERE id=?", [$_SESSION['auth']]);
 
         $data = $this->transformer->transformCommentPost($categories, $yourComments, $posts, $writers, $likes, $bookmarks, $comments);
-//              echo "<pre>";
-// var_dump($data);
-// exit;
+
         return $this->view->render('mycomments', 'profile-main', [
             'info' => $data,
             'user' => $user
